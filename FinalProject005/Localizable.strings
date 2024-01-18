@@ -1,0 +1,31 @@
+//
+//  Localizable.strings
+//  FinalProject005
+//
+//  Created by shadab khan on 25/01/24.
+//
+
+import Foundation
+
+class LanguageManager {
+    static let shared = LanguageManager()
+
+    var currentLanguage: String {
+        return UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
+    }
+
+    func setLanguage(_ language: String) {
+        UserDefaults.standard.set(language, forKey: "AppLanguage")
+        UserDefaults.standard.synchronize()
+
+        NotificationCenter.default.post(name: NSNotification.Name("LanguageChanged"), object: nil)
+    }
+
+    func localizedString(_ key: String) -> String {
+        let path = Bundle.main.path(forResource: currentLanguage, ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
+}
+
+
